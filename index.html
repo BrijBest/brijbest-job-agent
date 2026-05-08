@@ -1229,12 +1229,12 @@ async function submitForm(event) {
   try {
     // Use no-cors: GAS still receives and processes the data.
     // We show success optimistically (user gets confirmation email as proof).
-    await fetch(GAS_URL, {
-      method:  "POST",
-      mode:    "no-cors",
-      headers: { "Content-Type": "text/plain" },
-      body:    JSON.stringify(payload),
-    });
+    const formData = new URLSearchParams({ payload: JSON.stringify(payload) });
+   await fetch(GAS_URL, {
+     method: "POST",
+     mode: "no-cors",
+     body: formData,
+   });
 
     // Show success screen
     document.querySelectorAll(".tab-panel").forEach(p => p.style.display = "none");
