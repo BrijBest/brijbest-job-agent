@@ -912,11 +912,24 @@ select.field-input { cursor: pointer; }
 // Your Google Apps Script web app URL (from Step 3 of the setup guide)
 const GAS_URL = "https://script.google.com/macros/s/AKfycbyucQyqwOCvSBlv_eg7qwy-L-kpZloghr2uzw19qySSe-fjOdVL3c11Ts0J_mQLGJjO/exec";
 
-// Your free Gemini API key (get at aistudio.google.com — no credit card)
-// This key is used ONLY to read and extract text from uploaded CVs.
-// It is the FREE tier with no billing. Risk of exposure is minimal.
-const GEMINI_API_KEY = "AIzaSyAYAbi-_LDs1O5HvFvLiXyehP8UFv7wUoc";
+// ─────────────────────────────────────────────────────────
+// CV parsing via GAS 
+// ─────────────────────────────────────────────────────────
 
+async function parseCvViaGas(text) {
+  const resp = await fetch(GAS_URL, {
+    method: "POST",
+    body: new URLSearchParams({
+      payload: JSON.stringify({ action: "parse_cv", cvText: text })
+    })
+  });
+  const result = await resp.json();
+  if (result.success && result.parsed) {
+    applyParsedData(JSON.stringify(result.parsed));
+  } else {
+    throw new Error(result.error || "GAS parsing failed");
+  }
+}
 // ─────────────────────────────────────────────────────────
 // PDF text extractor function 
 // ─────────────────────────────────────────────────────────
@@ -1048,12 +1061,12 @@ async function processFile(file) {
   showParseStatus("loading", "📄 Extracting text from PDF…");
   const pdfText = await extractPdfText(file);
   showParseStatus("loading", "🤖 Analysing with AI…");
-  await parseWithGeminiText(pdfText);
-   } else {
-      showParseStatus("loading", "📝 Extracting text from document…");
-      extractedText = await extractDocxText(file);
-      showParseStatus("loading", "🤖 Analysing with AI…");
-      await parseWithGeminiText(extractedText);
+   await parseCvViaGas(/* the extracted text variable */);
+    } else {
+   showParseStatus("loading", "📝 Extracting text from document…");
+   extractedText = await extractDocxText(file);
+   showParseStatus("loading", "🤖 Analysing with AI…");
+   await parseCvViaGas(/* the extracted text variable */);
     }
   } catch (err) {
     console.error(err);
