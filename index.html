@@ -9,6 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 
 <style>
 /* ══════════════════════════════════════════
@@ -917,6 +918,23 @@ const GAS_URL = "https://script.google.com/macros/s/AKfycbyucQyqwOCvSBlv_eg7qwy-
 const GEMINI_API_KEY = "AIzaSyAYAbi-_LDs1O5HvFvLiXyehP8UFv7wUoc";
 
 // ─────────────────────────────────────────────────────────
+// PDF text extractor function 
+// ─────────────────────────────────────────────────────────
+async function extractPdfText(file) {
+  pdfjsLib.GlobalWorkerOptions.workerSrc =
+    'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  const buffer = await file.arrayBuffer();
+  const pdf = await pdfjsLib.getDocument({ data: buffer }).promise;
+  let text = '';
+  for (let i = 1; i <= Math.min(pdf.numPages, 5); i++) {
+    const page = await pdf.getPage(i);
+    const content = await page.getTextContent();
+    text += content.items.map(item => item.str).join(' ') + '\n';
+  }
+  return text;
+}
+   
+// ─────────────────────────────────────────────────────────
 // ② TAG INPUT SYSTEM
 // ─────────────────────────────────────────────────────────
 const tagData = { roles: [], keywords: [] };
@@ -1027,9 +1045,11 @@ async function processFile(file) {
     // Extract text for Gemini
     let extractedText = "";
     if (ext === "pdf") {
-      showParseStatus("loading", "🤖 Sending CV to AI for parsing…");
-      await parseWithGeminiPdf(base64.split(",")[1]);
-    } else {
+  showParseStatus("loading", "📄 Extracting text from PDF…");
+  const pdfText = await extractPdfText(file);
+  showParseStatus("loading", "🤖 Analysing with AI…");
+  await parseWithGeminiText(pdfText);
+   } else {
       showParseStatus("loading", "📝 Extracting text from document…");
       extractedText = await extractDocxText(file);
       showParseStatus("loading", "🤖 Analysing with AI…");
