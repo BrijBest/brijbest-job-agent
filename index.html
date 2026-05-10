@@ -248,10 +248,10 @@ select.field-input{cursor:pointer;}
           <div class="field-group">
             <label class="field-label">Target Roles <span class="req">*</span></label>
             <div class="tag-input-wrap" id="roles-wrap" onclick="focusTagInput('roles-input')">
-              <input class="tag-text-input" id="roles-input" type="text" placeholder="Type a role & press Enter…" onkeydown="handleTagInput(event,'roles')">
+              <input class="tag-text-input" id="roles-input" type="text" placeholder="Type a role, then comma…" onkeydown="handleTagInput(event,'roles')" onpaste="handleTagPaste(event,'roles')">
             </div>
             <input type="hidden" id="roles-hidden">
-            <div class="tag-hint">e.g. AML Analyst · KYC Officer · Compliance Specialist · Professor · Business Analyst</div>
+            <div class="tag-hint">Type each role followed by a comma — e.g. AML Analyst, KYC Officer, Professor, Business Analyst</div>
           </div>
         </div>
 
@@ -259,10 +259,10 @@ select.field-input{cursor:pointer;}
           <div class="field-group">
             <label class="field-label">Keywords / Skills</label>
             <div class="tag-input-wrap" id="keywords-wrap" onclick="focusTagInput('keywords-input')">
-              <input class="tag-text-input" id="keywords-input" type="text" placeholder="Type a keyword & press Enter…" onkeydown="handleTagInput(event,'keywords')">
+              <input class="tag-text-input" id="keywords-input" type="text" placeholder="Type a keyword, then comma…" onkeydown="handleTagInput(event,'keywords')" onpaste="handleTagPaste(event,'keywords')">
             </div>
             <input type="hidden" id="keywords-hidden">
-            <div class="tag-hint">e.g. FATCA · Sanctions · CDD · MBA · Financial Crime · Risk Management</div>
+            <div class="tag-hint">Type each keyword followed by a comma — e.g. FATCA, Sanctions, CDD, MBA</div>
           </div>
         </div>
 
@@ -423,16 +423,28 @@ function setLanguage(pref) {
 const tagData = { roles:[], keywords:[] };
 
 function handleTagInput(event, field) {
-  if (event.key === "Enter" || event.key === ",") {
+  if (event.key === ",") {
     event.preventDefault();
-    const val = event.target.value.trim().replace(/,$/,"");
+    const val = event.target.value.trim();
     if (val && !tagData[field].includes(val)) {
       tagData[field].push(val);
       renderTags(field);
-      event.target.value = "";
       updateHiddenInput(field);
     }
+    event.target.value = "";
   }
+}
+function handleTagPaste(event, field) {
+  event.preventDefault();
+  const pasted = (event.clipboardData || window.clipboardData).getData("text");
+  pasted.split(",").map(v => v.trim()).filter(Boolean).forEach(val => {
+    if (!tagData[field].includes(val)) {
+      tagData[field].push(val);
+    }
+  });
+  renderTags(field);
+  updateHiddenInput(field);
+  event.target.value = "";
 }
 function renderTags(field) {
   const wrap  = document.getElementById(field + "-wrap");
