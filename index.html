@@ -4,37 +4,19 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Free Daily Job Alerts — BrijBest Job Search Agent</title>
-<meta name="description" content="Get personalised daily job alerts delivered to your inbox. Free. No subscriptions. Powered by BrijBest.">
-
-<!-- Favicon — no file upload needed -->
+<meta name="description" content="Get personalised daily job alerts across Europe. Free. No subscriptions. Powered by BrijBest.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💼</text></svg>">
-
-<!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-
-<!-- DOCX text extraction -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
-<!-- PDF text extraction (replaces sending raw PDF to Gemini — fixes 429 rate limit) -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-
 <style>
-:root {
-  --navy:     #1a2744;
-  --navy-mid: #243460;
-  --gold:     #D4A030;
-  --gold-lt:  #f0c860;
-  --bg:       #f0f4f9;
-  --white:    #ffffff;
-  --border:   #dde5f0;
-  --text:     #1f2937;
-  --text-dim: #6b7280;
-  --text-muted:#9ca3af;
-  --green:    #16a34a;
-  --red:      #dc2626;
-  --radius:   12px;
-  --shadow-lg:0 12px 48px rgba(26,39,68,0.16);
+:root{
+  --navy:#1a2744;--navy-mid:#243460;--gold:#D4A030;--gold-lt:#f0c860;
+  --bg:#f0f4f9;--white:#fff;--border:#dde5f0;
+  --text:#1f2937;--text-dim:#6b7280;--text-muted:#9ca3af;
+  --green:#16a34a;--red:#dc2626;--shadow-lg:0 12px 48px rgba(26,39,68,0.16);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6;}
@@ -45,32 +27,29 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .logo-mark{width:36px;height:36px;background:var(--gold);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:900;font-size:18px;color:var(--navy);}
 .logo-text{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:#fff;}
 .logo-text span{color:var(--gold);}
-.header-link{color:rgba(255,255,255,0.7);text-decoration:none;font-size:13px;transition:color .2s;}
+.header-link{color:rgba(255,255,255,0.7);text-decoration:none;font-size:13px;}
 .header-link:hover{color:var(--gold);}
 
 /* HERO */
 .hero{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-mid) 60%,#1e3a8a 100%);padding:72px 32px 56px;text-align:center;position:relative;overflow:hidden;}
-.hero::before{content:'';position:absolute;top:-100px;right:-100px;width:400px;height:400px;background:radial-gradient(circle,rgba(212,160,48,0.12) 0%,transparent 70%);pointer-events:none;}
+.hero::before{content:'';position:absolute;top:-100px;right:-100px;width:400px;height:400px;background:radial-gradient(circle,rgba(212,160,48,0.12),transparent 70%);pointer-events:none;}
 .hero-label{display:inline-block;background:rgba(212,160,48,0.15);border:1px solid rgba(212,160,48,0.3);color:var(--gold-lt);font-family:'DM Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:6px 16px;border-radius:999px;margin-bottom:20px;}
-.hero h1{font-family:'Playfair Display',serif;font-size:clamp(30px,5vw,54px);font-weight:900;color:#fff;line-height:1.15;margin-bottom:16px;}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(28px,5vw,52px);font-weight:900;color:#fff;line-height:1.15;margin-bottom:16px;}
 .hero h1 em{font-style:normal;color:var(--gold);}
-.hero-sub{font-size:clamp(15px,2.5vw,18px);color:rgba(255,255,255,0.75);max-width:540px;margin:0 auto 36px;font-weight:300;}
-.trust-row{display:flex;justify-content:center;gap:28px;flex-wrap:wrap;}
+.hero-sub{font-size:clamp(14px,2.5vw,17px);color:rgba(255,255,255,0.75);max-width:560px;margin:0 auto 36px;font-weight:300;}
+.trust-row{display:flex;justify-content:center;gap:24px;flex-wrap:wrap;}
 .trust-item{display:flex;align-items:center;gap:8px;color:rgba(255,255,255,0.7);font-size:13px;}
 .trust-dot{width:8px;height:8px;background:var(--gold);border-radius:50%;flex-shrink:0;}
 
 /* FORM CARD */
-.main-wrap{max-width:720px;margin:-28px auto 60px;padding:0 20px;position:relative;z-index:10;}
+.main-wrap{max-width:740px;margin:-28px auto 60px;padding:0 20px;position:relative;z-index:10;}
 .form-card{background:var(--white);border-radius:16px;box-shadow:var(--shadow-lg);overflow:hidden;}
-
-/* TABS */
 .tabs{display:flex;border-bottom:2px solid var(--border);}
-.tab-btn{flex:1;padding:18px 16px;background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;color:var(--text-dim);display:flex;align-items:center;justify-content:center;gap:8px;transition:color .2s,background .2s;position:relative;}
+.tab-btn{flex:1;padding:18px 16px;background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;color:var(--text-dim);display:flex;align-items:center;justify-content:center;gap:8px;position:relative;transition:color .2s,background .2s;}
 .tab-btn::after{content:'';position:absolute;bottom:-2px;left:0;right:0;height:2px;background:var(--navy);transform:scaleX(0);transition:transform .25s;}
 .tab-btn.active{color:var(--navy);font-weight:600;}
 .tab-btn.active::after{transform:scaleX(1);}
 .tab-btn:hover{background:#f8faff;}
-.tab-icon{font-size:18px;line-height:1;}
 .tab-panel{display:none;padding:32px;}
 .tab-panel.active{display:block;}
 
@@ -78,7 +57,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .form-section-title{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid var(--border);}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
 .form-row.full{grid-template-columns:1fr;}
-@media(max-width:520px){.form-row{grid-template-columns:1fr;}}
+@media(max-width:540px){.form-row{grid-template-columns:1fr;}}
 .field-group{display:flex;flex-direction:column;gap:6px;}
 .field-label{font-size:13px;font-weight:500;color:var(--text);}
 .field-label .req{color:var(--red);margin-left:2px;}
@@ -86,16 +65,29 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .field-input:focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(26,39,68,0.08);}
 .field-input::placeholder{color:var(--text-muted);}
 select.field-input{cursor:pointer;}
-
-/* TAG INPUT */
 .tag-input-wrap{border:1.5px solid var(--border);border-radius:8px;padding:8px 10px;display:flex;flex-wrap:wrap;gap:6px;cursor:text;min-height:48px;transition:border-color .2s,box-shadow .2s;background:#fff;}
 .tag-input-wrap:focus-within{border-color:var(--navy);box-shadow:0 0 0 3px rgba(26,39,68,0.08);}
 .tag-chip{display:inline-flex;align-items:center;gap:5px;background:var(--navy);color:#fff;border-radius:6px;font-size:12px;font-weight:500;padding:4px 10px;white-space:nowrap;}
-.tag-chip .rm{cursor:pointer;opacity:.7;font-size:14px;line-height:1;}
-.tag-chip .rm:hover{opacity:1;}
-.tag-text-input{border:none;outline:none;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);min-width:120px;flex:1;background:transparent;padding:2px 4px;}
+.tag-chip .remove-tag{cursor:pointer;opacity:.7;font-size:14px;line-height:1;}
+.tag-chip .remove-tag:hover{opacity:1;}
+.tag-text-input{border:none;outline:none;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);min-width:100px;flex:1;background:transparent;padding:2px 4px;}
 .tag-hint{font-size:11px;color:var(--text-muted);margin-top:4px;font-style:italic;}
 .form-divider{border:none;border-top:1px dashed var(--border);margin:24px 0;}
+
+/* COUNTRY SELECTOR */
+.country-grid{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;}
+.country-chip{display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;font-size:13px;font-weight:500;color:var(--text-dim);background:#fff;transition:all .18s;user-select:none;}
+.country-chip:hover{border-color:var(--navy);color:var(--navy);}
+.country-chip.selected{background:var(--navy);border-color:var(--navy);color:#fff;}
+.country-chip .flag{font-size:16px;line-height:1;}
+.country-error{font-size:12px;color:var(--red);margin-top:6px;display:none;}
+.country-error.show{display:block;}
+
+/* LANGUAGE TOGGLE */
+.lang-toggle{display:flex;gap:0;border:1.5px solid var(--border);border-radius:8px;overflow:hidden;margin-top:6px;}
+.lang-option{flex:1;padding:10px 16px;text-align:center;cursor:pointer;font-size:13px;font-weight:500;color:var(--text-dim);background:#fff;transition:all .18s;border:none;font-family:'DM Sans',sans-serif;}
+.lang-option.active{background:var(--navy);color:#fff;}
+.lang-option:first-child{border-right:1.5px solid var(--border);}
 
 /* CV UPLOAD */
 .drop-zone{border:2px dashed var(--border);border-radius:12px;padding:48px 24px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;background:#f8faff;}
@@ -108,17 +100,17 @@ select.field-input{cursor:pointer;}
 .upload-btn:hover{background:var(--navy-mid);}
 .formats-note{font-size:11px;color:var(--text-muted);margin-top:12px;font-family:'DM Mono',monospace;}
 
-/* PARSE STATUS */
-.parse-status{display:none;padding:16px;border-radius:8px;font-size:14px;font-weight:500;margin-top:16px;align-items:center;gap:10px;}
+/* STATUS MESSAGES */
+.parse-status{display:none;padding:14px 16px;border-radius:8px;font-size:14px;font-weight:500;margin-top:16px;align-items:center;gap:10px;}
 .parse-status.loading{display:flex;background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;}
 .parse-status.success{display:flex;background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0;}
 .parse-status.error{display:flex;background:#fef2f2;color:var(--red);border:1px solid #fecaca;}
 .spinner{width:18px;height:18px;border:2px solid rgba(29,78,216,0.2);border-top-color:#1d4ed8;border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0;}
 @keyframes spin{to{transform:rotate(360deg);}}
-
-/* PREFILL BANNER */
 .prefill-banner{display:none;background:linear-gradient(135deg,rgba(26,39,68,0.04),rgba(212,160,48,0.06));border:1px solid rgba(212,160,48,0.3);border-radius:8px;padding:14px 16px;font-size:13px;color:var(--navy);margin-bottom:20px;align-items:flex-start;gap:10px;}
 .prefill-banner.show{display:flex;}
+.prefill-banner strong{display:block;font-weight:600;margin-bottom:2px;}
+.prefill-banner p{color:var(--text-dim);margin:0;font-size:12px;}
 
 /* CONSENT */
 .consent-box{background:#f8faff;border:1px solid var(--border);border-radius:10px;padding:20px;margin-top:4px;}
@@ -131,7 +123,7 @@ select.field-input{cursor:pointer;}
 
 /* SUBMIT */
 .submit-row{margin-top:24px;}
-.submit-btn{width:100%;padding:16px;background:linear-gradient(135deg,var(--navy) 0%,var(--navy-mid) 100%);color:#fff;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:16px;font-weight:600;cursor:pointer;transition:opacity .2s,transform .15s;display:flex;align-items:center;justify-content:center;gap:10px;}
+.submit-btn{width:100%;padding:16px;background:linear-gradient(135deg,var(--navy),var(--navy-mid));color:#fff;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:16px;font-weight:600;cursor:pointer;transition:opacity .2s,transform .15s;display:flex;align-items:center;justify-content:center;gap:10px;}
 .submit-btn:hover{opacity:.92;transform:translateY(-1px);}
 .submit-btn:active{transform:translateY(0);}
 .submit-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
@@ -143,7 +135,7 @@ select.field-input{cursor:pointer;}
 .success-screen.show{display:block;}
 .check-circle{width:72px;height:72px;background:linear-gradient(135deg,#16a34a,#22c55e);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:34px;}
 .success-screen h2{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--navy);margin-bottom:12px;}
-.success-screen p{font-size:15px;color:var(--text-dim);max-width:400px;margin:0 auto 24px;line-height:1.7;}
+.success-screen p{font-size:15px;color:var(--text-dim);max-width:420px;margin:0 auto 24px;line-height:1.7;}
 .success-links{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
 .success-link{display:inline-block;padding:10px 24px;border-radius:8px;font-size:14px;font-weight:500;text-decoration:none;transition:opacity .2s;}
 .success-link.primary{background:var(--navy);color:#fff;}
@@ -151,7 +143,7 @@ select.field-input{cursor:pointer;}
 .success-link:hover{opacity:.85;}
 
 /* TRUST CARDS */
-.trust-section{max-width:720px;margin:0 auto 48px;padding:0 20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;}
+.trust-section{max-width:740px;margin:0 auto 48px;padding:0 20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;}
 .trust-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:20px;text-align:center;}
 .trust-card .icon{font-size:28px;margin-bottom:10px;}
 .trust-card h3{font-size:14px;font-weight:600;color:var(--navy);margin-bottom:6px;}
@@ -165,6 +157,7 @@ select.field-input{cursor:pointer;}
 </head>
 <body>
 
+<!-- HEADER -->
 <header class="site-header">
   <a href="https://www.brijbest.com" class="site-logo">
     <div class="logo-mark">B</div>
@@ -173,54 +166,49 @@ select.field-input{cursor:pointer;}
   <a href="https://www.brijbest.com" class="header-link">← Back to main site</a>
 </header>
 
+<!-- HERO -->
 <section class="hero">
-  <div class="hero-label">✦ Free · No Subscription · No Credit Card</div>
-  <h1>Your <em>Personalised</em> Daily<br>Job Digest — Automated</h1>
-  <p class="hero-sub">Enter your preferences or upload your CV. We'll search multiple job boards every morning and deliver matching roles straight to your inbox.</p>
+  <div class="hero-label">✦ 16 Countries · Free · No Credit Card</div>
+  <h1>Your <em>Personalised</em> Daily<br>Job Digest — Across Europe</h1>
+  <p class="hero-sub">Choose your countries, set your preferences, upload your CV. We search multiple job boards every morning across Europe and deliver matching roles to your inbox.</p>
   <div class="trust-row">
-    <div class="trust-item"><div class="trust-dot"></div>Completely free</div>
+    <div class="trust-item"><div class="trust-dot"></div>16 European countries</div>
+    <div class="trust-item"><div class="trust-dot"></div>English or any language</div>
     <div class="trust-item"><div class="trust-dot"></div>New jobs every morning</div>
-    <div class="trust-item"><div class="trust-dot"></div>Unsubscribe anytime</div>
     <div class="trust-item"><div class="trust-dot"></div>GDPR compliant</div>
   </div>
 </section>
 
+<!-- FORM CARD -->
 <div class="main-wrap">
   <div class="form-card">
 
     <div class="tabs" role="tablist">
-      <button class="tab-btn active" id="tab-manual" onclick="switchTab('manual')" role="tab">
-        <span class="tab-icon">📝</span> Fill In Manually
-      </button>
-      <button class="tab-btn" id="tab-cv" onclick="switchTab('cv')" role="tab">
-        <span class="tab-icon">📄</span> Upload CV — Auto-fill
-      </button>
+      <button class="tab-btn active" id="tab-manual" onclick="switchTab('manual')" role="tab"><span>📝</span> Fill In Manually</button>
+      <button class="tab-btn" id="tab-cv" onclick="switchTab('cv')" role="tab"><span>📄</span> Upload CV — Auto-fill</button>
     </div>
 
-    <!-- SUCCESS SCREEN -->
+    <!-- SUCCESS -->
     <div class="success-screen" id="successScreen">
       <div class="check-circle">✓</div>
       <h2>You're all set!</h2>
-      <p>Your daily job digest will arrive tomorrow morning. Check your email for a confirmation from BrijBest.</p>
+      <p>Your daily job digest will arrive tomorrow morning across your selected countries. Check your email for a welcome confirmation.</p>
       <div class="success-links">
         <a href="https://www.brijbest.com" class="success-link primary">Visit BrijBest →</a>
         <a href="#" onclick="resetForm();return false;" class="success-link secondary">Register another</a>
       </div>
     </div>
 
-    <!-- ════════════ PANEL: MANUAL ENTRY ════════════ -->
+    <!-- MANUAL PANEL -->
     <div class="tab-panel active" id="panel-manual">
-
       <div class="prefill-banner" id="prefillBanner">
         <span style="font-size:20px;flex-shrink:0;">✨</span>
-        <div>
-          <strong style="display:block;font-weight:600;margin-bottom:2px;">CV parsed successfully!</strong>
-          <p style="color:var(--text-dim);margin:0;font-size:12px;">We've auto-filled the form below. Please review, make any changes, and click Submit.</p>
-        </div>
+        <div><strong>CV parsed successfully!</strong><p>We've auto-filled the form below. Please review, select your countries, then click Submit.</p></div>
       </div>
 
       <form id="mainForm" onsubmit="submitForm(event)">
 
+        <!-- Personal Details -->
         <div class="form-section-title">Your Details</div>
         <div class="form-row">
           <div class="field-group">
@@ -252,395 +240,404 @@ select.field-input{cursor:pointer;}
         </div>
 
         <hr class="form-divider">
+
+        <!-- Job Preferences -->
         <div class="form-section-title">Job Preferences</div>
 
         <div class="form-row full">
           <div class="field-group">
             <label class="field-label">Target Roles <span class="req">*</span></label>
-            <div class="tag-input-wrap" id="roles-wrap" onclick="focusTag('roles-input')">
-              <input class="tag-text-input" id="roles-input" placeholder="Type a role & press Enter…" onkeydown="handleTag(event,'roles')">
+            <div class="tag-input-wrap" id="roles-wrap" onclick="focusTagInput('roles-input')">
+              <input class="tag-text-input" id="roles-input" type="text" placeholder="Type a role & press Enter…" onkeydown="handleTagInput(event,'roles')">
             </div>
-            <div class="tag-hint">e.g. AML Analyst · KYC Officer · Compliance Specialist</div>
+            <input type="hidden" id="roles-hidden">
+            <div class="tag-hint">e.g. AML Analyst · KYC Officer · Compliance Specialist · Professor · Business Analyst</div>
           </div>
         </div>
 
         <div class="form-row full">
           <div class="field-group">
             <label class="field-label">Keywords / Skills</label>
-            <div class="tag-input-wrap" id="keywords-wrap" onclick="focusTag('keywords-input')">
-              <input class="tag-text-input" id="keywords-input" placeholder="Type a keyword & press Enter…" onkeydown="handleTag(event,'keywords')">
+            <div class="tag-input-wrap" id="keywords-wrap" onclick="focusTagInput('keywords-input')">
+              <input class="tag-text-input" id="keywords-input" type="text" placeholder="Type a keyword & press Enter…" onkeydown="handleTagInput(event,'keywords')">
             </div>
-            <div class="tag-hint">e.g. FATCA · Sanctions · CDD · Financial Crime</div>
+            <input type="hidden" id="keywords-hidden">
+            <div class="tag-hint">e.g. FATCA · Sanctions · CDD · MBA · Financial Crime · Risk Management</div>
           </div>
         </div>
 
-        <div class="form-row full">
+        <div class="form-row">
           <div class="field-group">
-            <label class="field-label" for="flocation">Preferred Location <span class="req">*</span></label>
-            <input class="field-input" type="text" id="flocation" placeholder="e.g. Warsaw, Poland / Remote / Europe" required>
+            <label class="field-label" for="fcity">City / Region <span style="color:var(--text-muted);font-weight:400;">(optional)</span></label>
+            <input class="field-input" type="text" id="fcity" placeholder="e.g. Warsaw, Berlin, Paris…">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Job Language <span class="req">*</span></label>
+            <div class="lang-toggle">
+              <button type="button" class="lang-option active" id="lang-en" onclick="setLanguage('English Only')">🇬🇧 English Only</button>
+              <button type="button" class="lang-option" id="lang-any" onclick="setLanguage('Any Language')">🌍 Any Language</button>
+            </div>
+            <input type="hidden" id="language-hidden" value="English Only">
           </div>
         </div>
 
         <hr class="form-divider">
+
+        <!-- Country Selector -->
+        <div class="form-section-title">Target Countries <span class="req">*</span> — select one or more</div>
+        <div class="country-grid" id="countryGrid"></div>
+        <input type="hidden" id="countries-hidden">
+        <div class="country-error" id="countryError">Please select at least one country.</div>
+
+        <hr class="form-divider">
+
+        <!-- GDPR Consent -->
         <div class="form-section-title">Your Consent (EU GDPR)</div>
         <div class="consent-box">
           <div class="consent-item">
             <input type="checkbox" id="consentAlerts" required>
-            <div class="consent-text">
-              <strong>Daily Job Alerts (required)</strong><br>
-              I agree to my name, email, phone, and job preferences being stored and used to send me personalised daily job alert emails. I can unsubscribe at any time via the link in each email.
-            </div>
+            <div class="consent-text"><strong>Daily Job Alerts (required)</strong> I agree to my name, email, phone, and job preferences being stored and used to send me daily job alert emails. I can unsubscribe anytime via the link in each email.</div>
           </div>
           <div class="consent-item">
             <input type="checkbox" id="consentCoaching">
-            <div class="consent-text">
-              <strong>Career Coaching Contact (optional)</strong><br>
-              I consent to being contacted by BrijBest about career coaching, CV review, and employment services. My CV (if uploaded) may be reviewed by Brij Bhavsar for this purpose.
-            </div>
+            <div class="consent-text"><strong>Career Coaching Contact (optional)</strong> I consent to being contacted by BrijBest about career coaching, CV review, and employment services. My CV (if uploaded) may be reviewed by Brij Bhavsar for this purpose.</div>
           </div>
-          <div style="margin-top:12px;font-size:11px;color:var(--text-muted);">
-            Data stored securely on Google Sheets & Drive. Never sold to third parties.
-            <a href="https://www.brijbest.com/privacypolicy" target="_blank">Privacy Policy →</a>
-          </div>
+          <div style="margin-top:12px;font-size:11px;color:var(--text-muted);">Data stored securely on Google Sheets & Drive. Never sold to third parties. <a href="https://www.brijbest.com/privacypolicy" target="_blank">Privacy Policy →</a></div>
         </div>
 
         <div class="submit-row">
-          <button type="submit" class="submit-btn" id="submitBtn">
-            <span id="submitLabel">🚀 Start My Daily Job Alerts — Free</span>
-          </button>
-          <p class="submit-hint">
-            No credit card · Unsubscribe anytime ·
-            <a href="https://www.brijbest.com/privacypolicy" target="_blank">Privacy Policy</a>
-          </p>
+          <button type="submit" class="submit-btn" id="submitBtn"><span id="submitLabel">🚀 Start My Daily Job Alerts — Free</span></button>
+          <p class="submit-hint">No credit card · Unsubscribe anytime · <a href="https://www.brijbest.com/privacypolicy" target="_blank">Privacy Policy</a></p>
         </div>
-
       </form>
     </div><!-- end panel-manual -->
 
-    <!-- ════════════ PANEL: CV UPLOAD ════════════ -->
+    <!-- CV UPLOAD PANEL -->
     <div class="tab-panel" id="panel-cv">
       <div class="form-section-title">Upload Your CV — We'll Extract Your Details</div>
-
-      <div class="drop-zone" id="dropZone"
-           ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
+      <div class="drop-zone" id="dropZone" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
         <div class="drop-zone-icon">📎</div>
         <div class="drop-zone-title">Drop your CV here</div>
         <div class="drop-zone-sub">or click to browse your files</div>
-        <button type="button" class="upload-btn" onclick="document.getElementById('cvFileInput').click()">
-          📂 Choose File
-        </button>
-        <div class="formats-note">PDF · DOC · DOCX · up to 5 MB</div>
+        <button type="button" class="upload-btn" onclick="document.getElementById('cvFileInput').click()">📂 Choose File</button>
+        <div class="formats-note">PDF · DOC · DOCX · up to 5MB</div>
         <input type="file" id="cvFileInput" class="drop-zone-input" accept=".pdf,.doc,.docx" onchange="handleFileSelect(event)">
       </div>
-
       <div class="parse-status" id="parseStatus"></div>
-
-      <p style="font-size:13px;color:var(--text-dim);margin-top:20px;line-height:1.7;">
-        After upload, we extract the text from your CV and send it to our secure server for AI parsing. Your CV is saved to BrijBest's private Google Drive — accessible only to Brij Bhavsar.
-      </p>
-      <p style="font-size:12px;color:var(--text-muted);margin-top:8px;">
-        <a href="https://www.brijbest.com/privacypolicy" target="_blank" style="color:var(--navy);">Privacy Policy →</a>
-      </p>
+      <p style="font-size:13px;color:var(--text-dim);margin-top:20px;line-height:1.7;">Once parsed, you'll be taken to the form tab with your details auto-filled. You can then select your countries and language preference before submitting.</p>
+      <p style="font-size:12px;color:var(--text-muted);margin-top:10px;line-height:1.7;">🔒 Your CV text is processed securely on our server. The file is saved to a private Google Drive accessible only to Brij Bhavsar. <a href="https://www.brijbest.com/privacypolicy" target="_blank" style="color:var(--navy);">Privacy Policy →</a></p>
     </div>
 
   </div><!-- end form-card -->
 </div><!-- end main-wrap -->
 
+<!-- TRUST SECTION -->
 <div class="trust-section">
-  <div class="trust-card"><div class="icon">🤖</div><h3>AI-Powered Matching</h3><p>Gemini AI filters hundreds of listings each morning to find only roles matching your exact profile.</p></div>
-  <div class="trust-card"><div class="icon">📬</div><h3>Daily Inbox Delivery</h3><p>A clean, curated email digest lands in your inbox every morning — no logging in, no browsing needed.</p></div>
-  <div class="trust-card"><div class="icon">🔒</div><h3>GDPR Compliant</h3><p>Your data is stored on secure Google infrastructure and is never shared or sold. Unsubscribe instantly.</p></div>
+  <div class="trust-card"><div class="icon">🌍</div><h3>16 European Countries</h3><p>Search across Poland, France, Germany, Ireland, Italy and 11 more — all from one form.</p></div>
+  <div class="trust-card"><div class="icon">🤖</div><h3>AI-Powered Matching</h3><p>Gemini AI filters hundreds of listings each morning to find only roles that match your profile.</p></div>
+  <div class="trust-card"><div class="icon">🇬🇧</div><h3>English Filter</h3><p>Only want English-language job postings? Toggle it on and irrelevant local-language listings are filtered out automatically.</p></div>
   <div class="trust-card"><div class="icon">💼</div><h3>Expert Career Support</h3><p>Found a great role? Brij offers personalised CV review, cover letters, and interview coaching.</p></div>
 </div>
 
+<!-- FOOTER -->
 <footer class="site-footer">
-  <p>
-    <strong style="color:#fff;">BrijBest Job Search Agent</strong><br>
-    Lokalna 51, 04-903 Warszawa · WhatsApp: +48 729 465 650<br>
-    <a href="https://www.brijbest.com">brijbest.com</a> ·
-    <a href="https://www.brijbest.com/privacypolicy">Privacy Policy</a><br>
-    <span style="font-size:11px;opacity:.6;">© 2026 BrijBest. Built with AI.</span>
-  </p>
+  <p><strong style="color:#fff;">BrijBest Job Search Agent</strong><br>
+  Lokalna 51, 04-903 Warszawa, Poland · WhatsApp: +48 729 465 650<br>
+  <a href="https://www.brijbest.com">brijbest.com</a> · <a href="https://www.brijbest.com/privacypolicy">Privacy Policy</a><br>
+  <span style="font-size:11px;opacity:.6;">© 2026 BrijBest. Built with AI.</span></p>
 </footer>
 
 <script>
-// ════════════════════════════════════════════════════════
-// ① CONFIGURATION — fill in your GAS web app URL only
-//    Gemini key is now handled server-side (secure)
-// ════════════════════════════════════════════════════════
+// ─────────────────────────────────────────────────────────
+// CONFIG — only GAS_URL needs to be filled in
+// ─────────────────────────────────────────────────────────
 const GAS_URL = "https://script.google.com/macros/s/AKfycbyucQyqwOCvSBlv_eg7qwy-L-kpZloghr2uzw19qySSe-fjOdVL3c11Ts0J_mQLGJjO/exec";
 
-// ════════════════════════════════════════════════════════
-// ② TAG INPUT
-// ════════════════════════════════════════════════════════
-const tags = { roles: [], keywords: [] };
+// ─────────────────────────────────────────────────────────
+// COUNTRY DATA — 16 countries with flags
+// ─────────────────────────────────────────────────────────
+const COUNTRIES = [
+  { name:"Poland",         flag:"🇵🇱" },
+  { name:"France",         flag:"🇫🇷" },
+  { name:"Germany",        flag:"🇩🇪" },
+  { name:"Ireland",        flag:"🇮🇪" },
+  { name:"Belgium",        flag:"🇧🇪" },
+  { name:"Netherlands",    flag:"🇳🇱" },
+  { name:"Austria",        flag:"🇦🇹" },
+  { name:"Italy",          flag:"🇮🇹" },
+  { name:"Spain",          flag:"🇪🇸" },
+  { name:"Portugal",       flag:"🇵🇹" },
+  { name:"Denmark",        flag:"🇩🇰" },
+  { name:"Sweden",         flag:"🇸🇪" },
+  { name:"Finland",        flag:"🇫🇮" },
+  { name:"Czech Republic", flag:"🇨🇿" },
+  { name:"Romania",        flag:"🇷🇴" },
+  { name:"Hungary",        flag:"🇭🇺" },
+  { name:"Cyprus",         flag:"🇨🇾" },
+];
 
-function handleTag(e, field) {
-  if (e.key !== "Enter" && e.key !== ",") return;
-  e.preventDefault();
-  const val = e.target.value.trim().replace(/,$/, "");
-  if (val && !tags[field].includes(val)) {
-    tags[field].push(val);
-    renderTags(field);
-    updateHidden(field);
-  }
-  e.target.value = "";
+let selectedCountries = new Set(["Poland"]); // Poland pre-selected
+
+function buildCountryGrid() {
+  const grid = document.getElementById("countryGrid");
+  grid.innerHTML = "";
+  COUNTRIES.forEach(({ name, flag }) => {
+    const chip = document.createElement("div");
+    chip.className = "country-chip" + (selectedCountries.has(name) ? " selected" : "");
+    chip.dataset.country = name;
+    chip.innerHTML = '<span class="flag">' + flag + '</span><span>' + name + '</span>';
+    chip.onclick = () => toggleCountry(name, chip);
+    grid.appendChild(chip);
+  });
+  updateCountriesHidden();
 }
 
+function toggleCountry(name, chip) {
+  if (selectedCountries.has(name)) {
+    selectedCountries.delete(name);
+    chip.classList.remove("selected");
+  } else {
+    selectedCountries.add(name);
+    chip.classList.add("selected");
+  }
+  updateCountriesHidden();
+  document.getElementById("countryError").classList.remove("show");
+}
+
+function updateCountriesHidden() {
+  document.getElementById("countries-hidden").value = [...selectedCountries].join(",");
+}
+
+// ─────────────────────────────────────────────────────────
+// LANGUAGE TOGGLE
+// ─────────────────────────────────────────────────────────
+function setLanguage(pref) {
+  document.getElementById("language-hidden").value = pref;
+  document.getElementById("lang-en").classList.toggle("active", pref === "English Only");
+  document.getElementById("lang-any").classList.toggle("active", pref === "Any Language");
+}
+
+// ─────────────────────────────────────────────────────────
+// TAG INPUT
+// ─────────────────────────────────────────────────────────
+const tagData = { roles:[], keywords:[] };
+
+function handleTagInput(event, field) {
+  if (event.key === "Enter" || event.key === ",") {
+    event.preventDefault();
+    const val = event.target.value.trim().replace(/,$/,"");
+    if (val && !tagData[field].includes(val)) {
+      tagData[field].push(val);
+      renderTags(field);
+      event.target.value = "";
+      updateHiddenInput(field);
+    }
+  }
+}
 function renderTags(field) {
-  const wrap  = document.getElementById(`${field}-wrap`);
-  const input = document.getElementById(`${field}-input`);
+  const wrap  = document.getElementById(field + "-wrap");
+  const input = document.getElementById(field + "-input");
   wrap.querySelectorAll(".tag-chip").forEach(c => c.remove());
-  tags[field].forEach(tag => {
+  tagData[field].forEach(tag => {
     const chip = document.createElement("div");
     chip.className = "tag-chip";
-    chip.innerHTML = `${tag}<span class="rm" onclick="removeTag('${field}','${tag}')">×</span>`;
+    chip.innerHTML = tag + '<span class="remove-tag" onclick="removeTag(\'' + field + '\',\'' + tag.replace(/'/g,"\\'") + '\')">\xd7</span>';
     wrap.insertBefore(chip, input);
   });
 }
-
-function removeTag(field, tag) {
-  tags[field] = tags[field].filter(t => t !== tag);
-  renderTags(field);
-  updateHidden(field);
-}
-
-function updateHidden(field) {
-  // stored in tags object — used at submit time
-}
-
-function focusTag(id) { document.getElementById(id).focus(); }
-
+function removeTag(field, tag) { tagData[field] = tagData[field].filter(t=>t!==tag); renderTags(field); updateHiddenInput(field); }
+function updateHiddenInput(field) { document.getElementById(field + "-hidden").value = tagData[field].join(","); }
+function focusTagInput(id) { document.getElementById(id).focus(); }
 function setTagsFromArray(field, arr) {
-  tags[field] = [...new Set((arr || []).filter(Boolean))];
+  tagData[field] = [...new Set(arr.filter(Boolean).map(s=>s.trim()))];
   renderTags(field);
+  updateHiddenInput(field);
 }
 
-// ════════════════════════════════════════════════════════
-// ③ TABS
-// ════════════════════════════════════════════════════════
+// ─────────────────────────────────────────────────────────
+// TAB SWITCHING
+// ─────────────────────────────────────────────────────────
 function switchTab(tab) {
   ["manual","cv"].forEach(t => {
-    document.getElementById(`panel-${t}`).classList.toggle("active", t === tab);
-    document.getElementById(`tab-${t}`).classList.toggle("active", t === tab);
+    document.getElementById("panel-"+t).classList.toggle("active", t===tab);
+    document.getElementById("tab-"+t).classList.toggle("active", t===tab);
   });
 }
 
-// ════════════════════════════════════════════════════════
-// ④ CV FILE HANDLING
-// ════════════════════════════════════════════════════════
+// ─────────────────────────────────────────────────────────
+// CV UPLOAD
+// ─────────────────────────────────────────────────────────
 let storedCvBase64 = "", storedCvFileName = "";
 
 function handleDragOver(e) { e.preventDefault(); document.getElementById("dropZone").classList.add("drag-over"); }
-function handleDragLeave()  { document.getElementById("dropZone").classList.remove("drag-over"); }
-function handleDrop(e)      { e.preventDefault(); handleDragLeave(); const f = e.dataTransfer.files[0]; if (f) processFile(f); }
-function handleFileSelect(e){ const f = e.target.files[0]; if (f) processFile(f); }
+function handleDragLeave(e) { document.getElementById("dropZone").classList.remove("drag-over"); }
+function handleDrop(e) { e.preventDefault(); document.getElementById("dropZone").classList.remove("drag-over"); if(e.dataTransfer.files[0]) processFile(e.dataTransfer.files[0]); }
+function handleFileSelect(e) { if(e.target.files[0]) processFile(e.target.files[0]); }
 
 async function processFile(file) {
-  if (file.size > 5 * 1024 * 1024) { showStatus("error","❌ File too large. Max 5 MB."); return; }
+  if (file.size > 5*1024*1024) { showParseStatus("error","❌ File too large. Max 5MB."); return; }
   const ext = file.name.split(".").pop().toLowerCase();
-  if (!["pdf","doc","docx"].includes(ext)) { showStatus("error","❌ Please upload a PDF, DOC, or DOCX file."); return; }
-
+  if (!["pdf","doc","docx"].includes(ext)) { showParseStatus("error","❌ Please upload PDF, DOC, or DOCX."); return; }
   storedCvFileName = file.name;
-
-  // Read as base64 for Drive storage
-  const base64Full = await fileToBase64(file);
-  storedCvBase64   = base64Full.split(",")[1];
-
-  // Extract text client-side (avoids sending heavy binary to Gemini)
-  let text = "";
+  storedCvBase64   = await fileToBase64Strip(file);
   try {
+    let text = "";
     if (ext === "pdf") {
-      showStatus("loading","📄 Extracting text from PDF…");
+      showParseStatus("loading","📄 Extracting text from PDF…");
       text = await extractPdfText(file);
     } else {
-      showStatus("loading","📝 Extracting text from document…");
+      showParseStatus("loading","📝 Extracting text from document…");
       text = await extractDocxText(file);
     }
-  } catch (err) {
-    showStatus("error","❌ Could not read file. Try a different PDF or DOCX.");
-    return;
+    if (!text || text.trim().length < 30) {
+      showParseStatus("error","⚠️ Could not read enough text. Please use a text-based PDF/DOCX or fill the form manually.");
+      return;
+    }
+    showParseStatus("loading","🤖 Analysing CV with AI — please wait…");
+    await parseCvViaGas(text);
+  } catch(err) {
+    console.error("processFile error:",err);
+    showParseStatus("error","⚠️ Something went wrong. Please fill in the form manually.");
+    setTimeout(()=>{ switchTab("manual"); showParseStatus("hidden",""); },2500);
   }
-
-  if (!text || text.trim().length < 30) {
-    showStatus("error","⚠️ CV appears to be image-only (scanned). Please type your details manually.");
-    setTimeout(() => { switchTab("manual"); showStatus("hidden",""); }, 2500);
-    return;
-  }
-
-  // Send text to GAS for secure Gemini parsing (key stays server-side)
-  showStatus("loading","🤖 Analysing CV with AI — this takes ~10 seconds…");
-  await parseCvViaGas(text);
 }
 
-function fileToBase64(file) {
-  return new Promise((res, rej) => {
-    const r = new FileReader();
-    r.onload  = () => res(r.result);
-    r.onerror = rej;
-    r.readAsDataURL(file);
-  });
+function fileToBase64Strip(file) {
+  return new Promise((res,rej)=>{ const r=new FileReader(); r.onload=()=>res(r.result.split(",")[1]); r.onerror=rej; r.readAsDataURL(file); });
 }
 
-// PDF text extraction using PDF.js (avoids sending binary to Gemini)
 async function extractPdfText(file) {
-  pdfjsLib.GlobalWorkerOptions.workerSrc =
-    "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
-  const buffer  = await file.arrayBuffer();
-  const pdf     = await pdfjsLib.getDocument({ data: buffer }).promise;
-  let   text    = "";
-  for (let i = 1; i <= Math.min(pdf.numPages, 6); i++) {
+  pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+  const buffer = await file.arrayBuffer();
+  const pdf    = await pdfjsLib.getDocument({data:buffer}).promise;
+  let text = "";
+  for (let i=1; i<=Math.min(pdf.numPages,5); i++) {
     const page    = await pdf.getPage(i);
     const content = await page.getTextContent();
-    text += content.items.map(item => item.str).join(" ") + "\n";
+    text += content.items.map(it=>it.str).join(" ") + "\n";
   }
-  return text;
+  return text.trim();
 }
 
-// DOCX text extraction using mammoth.js
 async function extractDocxText(file) {
-  return new Promise((res, rej) => {
+  return new Promise((res,rej)=>{
     const r = new FileReader();
-    r.onload = async e => {
-      try {
-        const result = await mammoth.extractRawText({ arrayBuffer: e.target.result });
-        res(result.value);
-      } catch(err) { rej(err); }
-    };
+    r.onload = async e => { try { const result = await mammoth.extractRawText({arrayBuffer:e.target.result}); res(result.value.trim()); } catch(err){rej(err);} };
     r.onerror = rej;
     r.readAsArrayBuffer(file);
   });
 }
 
-// ════════════════════════════════════════════════════════
-// ⑤ CV PARSING via GAS (Gemini key stays server-side)
-// ════════════════════════════════════════════════════════
-async function parseCvViaGas(text) {
-  try {
-    const resp = await fetch(GAS_URL, {
-      method: "POST",
-      body: new URLSearchParams({
-        payload: JSON.stringify({ action: "parse_cv", cvText: text })
-      }),
-      redirect: "follow",
-    });
-
-    if (!resp.ok) throw new Error(`Server error: ${resp.status}`);
-
-    const result = await resp.json();
-
-    if (result.success && result.parsed) {
-      applyParsedData(result.parsed);
-    } else {
-      throw new Error(result.error || "Parsing failed");
-    }
-  } catch (err) {
-    console.error("parseCvViaGas error:", err);
-    // If fetch fails due to CORS on response-read, still switch tabs
-    // GAS redirect sometimes blocks response reading — that's OK, just switch
-    showStatus("error","⚠️ Could not auto-fill. Please fill in the form manually.");
-    setTimeout(() => { switchTab("manual"); showStatus("hidden",""); }, 2500);
+async function parseCvViaGas(cvText) {
+  const resp = await fetch(GAS_URL, {
+    method:"POST",
+    body: new URLSearchParams({payload: JSON.stringify({action:"parse_cv", cvText:cvText.substring(0,4000)})}),
+    redirect:"follow",
+  });
+  if (!resp.ok) throw new Error("GAS returned HTTP " + resp.status);
+  let result;
+  try { result = await resp.json(); } catch(e) { throw new Error("GAS response was not valid JSON."); }
+  if (result.success && result.parsed) {
+    applyParsedData(result.parsed);
+  } else {
+    const msg = result.error || "Parsing failed.";
+    if (msg.includes("Rate limit")) { showParseStatus("error","⏳ " + msg); }
+    else throw new Error(msg);
   }
 }
 
 function applyParsedData(parsed) {
-  if (parsed.name)     document.getElementById("fname").value     = parsed.name;
-  if (parsed.email)    document.getElementById("femail").value    = parsed.email;
-  if (parsed.phone)    document.getElementById("fphone").value    = parsed.phone;
-  if (parsed.location) document.getElementById("flocation").value = parsed.location;
-
+  if (parsed.name)  document.getElementById("fname").value   = parsed.name;
+  if (parsed.email) document.getElementById("femail").value  = parsed.email;
+  if (parsed.phone) document.getElementById("fphone").value  = parsed.phone;
+  if (parsed.city)  document.getElementById("fcity").value   = parsed.city;
   if (parsed.seniority) {
     const sel = document.getElementById("fseniority");
-    for (const opt of sel.options) {
-      if (opt.value === parsed.seniority) { sel.value = parsed.seniority; break; }
-    }
+    for (const opt of sel.options) { if (opt.value===parsed.seniority){sel.value=parsed.seniority;break;} }
   }
-
   if (Array.isArray(parsed.targetRoles) && parsed.targetRoles.length) setTagsFromArray("roles", parsed.targetRoles);
-  if (Array.isArray(parsed.keywords)    && parsed.keywords.length)    setTagsFromArray("keywords", parsed.keywords);
-
-  showStatus("success","✅ CV parsed! Switching to form — please review your details.");
-  setTimeout(() => {
+  if (Array.isArray(parsed.keywords) && parsed.keywords.length) setTagsFromArray("keywords", parsed.keywords);
+  showParseStatus("success","✅ CV parsed! Switching to form — please select your countries then submit.");
+  setTimeout(()=>{
     switchTab("manual");
     document.getElementById("prefillBanner").classList.add("show");
-    document.getElementById("panel-manual").scrollIntoView({ behavior: "smooth" });
-    showStatus("hidden","");
-  }, 1800);
+    document.getElementById("panel-manual").scrollIntoView({behavior:"smooth"});
+    showParseStatus("hidden","");
+  },1800);
 }
 
-function showStatus(type, message) {
+function showParseStatus(type, message) {
   const el = document.getElementById("parseStatus");
-  el.className = `parse-status ${type}`;
-  if (type === "loading") el.innerHTML = `<div class="spinner"></div><span>${message}</span>`;
-  else if (type !== "hidden") el.innerHTML = `<span>${message}</span>`;
+  if (type==="hidden"){el.style.display="none";return;}
+  el.className="parse-status "+type;
+  el.style.display="flex";
+  el.innerHTML = type==="loading" ? '<div class="spinner"></div><span>'+message+'</span>' : '<span>'+message+'</span>';
 }
 
-// ════════════════════════════════════════════════════════
-// ⑥ FORM SUBMISSION
-// ════════════════════════════════════════════════════════
-async function submitForm(e) {
-  e.preventDefault();
-
-  if (tags.roles.length === 0) {
-    alert("Please add at least one target role — type it and press Enter.");
-    document.getElementById("roles-input").focus();
-    return;
-  }
+// ─────────────────────────────────────────────────────────
+// FORM SUBMISSION
+// ─────────────────────────────────────────────────────────
+async function submitForm(event) {
+  event.preventDefault();
+  if (tagData.roles.length === 0) { alert("Please add at least one target role (type it and press Enter)."); document.getElementById("roles-input").focus(); return; }
+  if (selectedCountries.size === 0) { document.getElementById("countryError").classList.add("show"); document.getElementById("countryGrid").scrollIntoView({behavior:"smooth"}); return; }
 
   const btn = document.getElementById("submitBtn");
-  btn.disabled = true;
-  document.getElementById("submitLabel").textContent = "⏳ Sending…";
+  const lbl = document.getElementById("submitLabel");
+  btn.disabled=true; lbl.textContent="⏳ Submitting…";
 
   const payload = {
-    action:          "submit_lead",
-    name:            document.getElementById("fname").value.trim(),
-    email:           document.getElementById("femail").value.trim(),
-    phone:           document.getElementById("fphone").value.trim(),
-    roles:           tags.roles,
-    keywords:        tags.keywords,
-    location:        document.getElementById("flocation").value.trim(),
-    seniority:       document.getElementById("fseniority").value,
-    consentAlerts:   document.getElementById("consentAlerts").checked,
-    consentCoaching: document.getElementById("consentCoaching").checked,
-    cvBase64:        storedCvBase64   || "",
-    cvFileName:      storedCvFileName || "",
+    action:             "submit_lead",
+    name:               document.getElementById("fname").value.trim(),
+    email:              document.getElementById("femail").value.trim(),
+    phone:              document.getElementById("fphone").value.trim(),
+    roles:              tagData.roles,
+    keywords:           tagData.keywords,
+    city:               document.getElementById("fcity").value.trim(),
+    countries:          [...selectedCountries],
+    languagePreference: document.getElementById("language-hidden").value,
+    seniority:          document.getElementById("fseniority").value,
+    consentAlerts:      document.getElementById("consentAlerts").checked,
+    consentCoaching:    document.getElementById("consentCoaching").checked,
+    cvBase64:           storedCvBase64   || "",
+    cvFileName:         storedCvFileName || "",
   };
 
   try {
-    // URLSearchParams + no-cors: GAS receives the data reliably
-    await fetch(GAS_URL, {
-      method: "POST",
-      mode:   "no-cors",
-      body:   new URLSearchParams({ payload: JSON.stringify(payload) }),
-    });
-
-    // Show success (optimistic — user gets confirmation email as proof)
-    document.querySelectorAll(".tab-panel").forEach(p => p.style.display = "none");
-    document.querySelector(".tabs").style.display = "none";
+    await fetch(GAS_URL, { method:"POST", mode:"no-cors", body:new URLSearchParams({payload:JSON.stringify(payload)}) });
+    document.querySelectorAll(".tab-panel").forEach(p=>p.style.display="none");
+    document.querySelector(".tabs").style.display="none";
     document.getElementById("successScreen").classList.add("show");
-    window.scrollTo({ top: 0, behavior: "smooth" });
-
-  } catch (err) {
+    window.scrollTo({top:0,behavior:"smooth"});
+  } catch(err) {
     console.error(err);
-    btn.disabled = false;
-    document.getElementById("submitLabel").textContent = "🚀 Start My Daily Job Alerts — Free";
+    btn.disabled=false; lbl.textContent="🚀 Start My Daily Job Alerts — Free";
     alert("Something went wrong. Please try again or contact bestbrij1@gmail.com");
   }
 }
 
 function resetForm() {
   document.getElementById("successScreen").classList.remove("show");
-  document.querySelectorAll(".tab-panel").forEach(p => p.style.display = "");
-  document.querySelector(".tabs").style.display = "";
+  document.querySelectorAll(".tab-panel").forEach(p=>p.style.display="");
+  document.querySelector(".tabs").style.display="";
   document.getElementById("mainForm").reset();
-  tags.roles = []; tags.keywords = [];
+  tagData.roles=[]; tagData.keywords=[];
   renderTags("roles"); renderTags("keywords");
-  storedCvBase64 = ""; storedCvFileName = "";
+  storedCvBase64=""; storedCvFileName="";
+  selectedCountries=new Set(["Poland"]);
+  buildCountryGrid();
+  setLanguage("English Only");
   document.getElementById("prefillBanner").classList.remove("show");
-  document.getElementById("submitBtn").disabled = false;
-  document.getElementById("submitLabel").textContent = "🚀 Start My Daily Job Alerts — Free";
+  document.getElementById("submitBtn").disabled=false;
+  document.getElementById("submitLabel").textContent="🚀 Start My Daily Job Alerts — Free";
+  showParseStatus("hidden","");
   switchTab("manual");
 }
+
+// ─────────────────────────────────────────────────────────
+// INIT
+// ─────────────────────────────────────────────────────────
+buildCountryGrid();
 </script>
 </body>
 </html>
